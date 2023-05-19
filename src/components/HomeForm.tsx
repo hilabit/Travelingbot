@@ -1,22 +1,17 @@
 import { useForm } from "react-hook-form";
 
-export const HomeForm = () => {
+export const HomeForm = ({ sendFormData }: { sendFormData: (data: { country: string }) => void }) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
-
-    console.log(watch("example")); // watch input value by passing the name of it
-
+    const onSubmit = data => sendFormData(data);
     return (
-        /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
         <form onSubmit={handleSubmit(onSubmit)}>
-            {/* register your input into the hook by invoking the "register" function */}
-            <input defaultValue="test" {...register("example")} />
-
-            {/* include validation with required or other standard HTML validation rules */}
-            <input {...register("exampleRequired", { required: true })} />
-            {/* errors will return when field validation fails  */}
-            {errors.exampleRequired && <span>This field is required</span>}
-
+            <select {...register("country")}>
+                {["Spain", "Italy", "Japan"].map(value => (
+                    <option key={value} value={value}>
+                        {value}
+                    </option>
+                ))}
+            </select>
             <input type="submit" />
         </form>
     );
